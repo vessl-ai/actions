@@ -22,12 +22,12 @@ jobs:
             [[ "$current_head" != "$base_ref" ]] || break
             email=$(git show -s --format='%ae')
             echo $email
-            [[ "$email" == *@vessl.ai ]] || exit 1
+            [[ "$email" == *@vessl.ai ]] || (echo "author email does not end with vessl.ai" && exit 1)
             coauthors=$(git show -s --format="%(trailers:key=Co-authored-by)")
             for coauthor in $coauthors; do
               coauthor_email=$(echo $coauthor | sed -E "s|^Co-authored-by: (.+)\<(.+)\>|\2|")
               echo $coauthor_email
-              [[ "$coauthor_email" == *@vessl.ai ]] || exit 1
+              [[ "$coauthor_email" == *@vessl.ai ]] || (echo "co-author email does not end with vessl.ai" && exit 1)
             done
             git switch HEAD~1
           done
