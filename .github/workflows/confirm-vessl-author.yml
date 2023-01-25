@@ -11,18 +11,22 @@ jobs:
           fetch-depth: 0
       - name: Check author
         run: |-
-          set -ex 
+          set -e 
           git fetch origin
           git rebase origin/${{ github.base_ref }}
+          echo "base ref: ${{ github.base_ref }}"
           while : ; do
             current_head=$(git rev-parse HEAD)
+            echo "current head: $current_head"
             [[ "$current_head" == "{{ github.base_ref }}" ]] || break
             email=$(git show -s --format='%ae')
-            [[ "$email" == *@vessl.ai ]]
+            echo $cemail
+            [[ "$email" == *@vessl.ai ]] || exit 1
             coauthors=$(git show -s --format="%(trailers:key=Co-authored-by)")
             for coauthor in $coauthors; do
               coauthor_email=$(echo $coauthor | sed -E "s|^Co-authored-by: (.+)\<(.+)\>|\2|")
-              [[ "$coauthor_email" == *@vessl.ai ]]
+              echo $coauthor_email
+              [[ "$coauthor_email" == *@vessl.ai ]] || exit 1
             done
             git switch HEAD~1
           done
