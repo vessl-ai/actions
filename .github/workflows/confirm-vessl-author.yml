@@ -24,7 +24,7 @@ jobs:
             echo $email
             [[ "$email" == *@vessl.ai ]] || (echo "author email does not end with vessl.ai" && exit 1)
             coauthors=$(git show -s --format="%(trailers:key=Co-authored-by)")
-            echo $coauthors
+            IFS=$'\n'
             for coauthor in $coauthors; do
               echo $coauthor
               coauthor_email=$(echo $coauthor | sed -E "s|^.+<(.+)>$|\1|")
