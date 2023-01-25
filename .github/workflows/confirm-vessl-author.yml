@@ -31,5 +31,5 @@ jobs:
               echo $coauthor_email
               [[ "$coauthor_email" == *@vessl.ai ]] || (echo "co-author email does not end with vessl.ai" && exit 1)
             done
-            git switch HEAD~1
+            git switch --detach HEAD~1
           done
