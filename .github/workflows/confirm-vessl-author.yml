@@ -1,0 +1,28 @@
+name: Confirm commit is well-formed
+on:
+  pull_request:
+jobs:
+  email-should-end-with-vessl-ai:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Check author
+        run: |-
+          set -e 
+          git fetch origin
+          git rebase ${{ github.base_ref }}
+          while : ; do
+            current_head=$(git rev-parse HEAD)
+            [[ "$current_head" == "{{ github.base_ref }}" ]] || break
+            email=$(git show -s --format='%ae')
+            [[ "$email" == *@vessl.ai ]]
+            coauthors=$(git show -s --format="%(trailers:key=Co-authored-by)")
+            for coauthor in $coauthors; do
+              coauthor_email=$(echo $coauthor | sed -E "s|^Co-authored-by: (.+)\<(.+)\>|\2|")
+              [[ "$coauthor_email" == *@vessl.ai ]]
+            done
+            git switch HEAD~1
+          done
