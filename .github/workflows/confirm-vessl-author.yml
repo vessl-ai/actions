@@ -13,7 +13,7 @@ jobs:
         run: |-
           set -e 
           git fetch origin
-          git rebase ${{ github.base_ref }}
+          git rebase origin/${{ github.base_ref }}
           while : ; do
             current_head=$(git rev-parse HEAD)
             [[ "$current_head" == "{{ github.base_ref }}" ]] || break
