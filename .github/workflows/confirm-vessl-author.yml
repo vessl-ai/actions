@@ -11,7 +11,7 @@ jobs:
           fetch-depth: 0
       - name: Check author
         run: |-
-          set -e 
+          set -ex 
           git fetch origin
           git rebase origin/${{ github.base_ref }}
           while : ; do
