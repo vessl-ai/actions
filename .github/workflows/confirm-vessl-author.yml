@@ -14,13 +14,14 @@ jobs:
           set -e 
           git fetch origin
           git rebase origin/${{ github.base_ref }}
-          echo "base ref: ${{ github.base_ref }}"
+          base_ref=$(git rev-parse origin/${{ github.base_ref }})
+          echo "base ref: $base_ref"
           while : ; do
             current_head=$(git rev-parse HEAD)
             echo "current head: $current_head"
-            [[ "$current_head" == "{{ github.base_ref }}" ]] || break
+            [[ "$current_head" != "$base_ref" ]] || break
             email=$(git show -s --format='%ae')
-            echo $cemail
+            echo $email
             [[ "$email" == *@vessl.ai ]] || exit 1
             coauthors=$(git show -s --format="%(trailers:key=Co-authored-by)")
             for coauthor in $coauthors; do
