@@ -7,11 +7,11 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Check author
         run: |-
           set -e 
+          git config --global user.email "devops@vessl.ai"
+          git config --global user.name "VESSL AI DevOps Bot"
           git fetch origin
           git rebase origin/${{ github.base_ref }}
           base_ref=$(git rev-parse origin/${{ github.base_ref }})
