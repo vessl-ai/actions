@@ -12,9 +12,11 @@ jobs:
           set -e 
           git config --global user.email "devops@vessl.ai"
           git config --global user.name "VESSL AI DevOps Bot"
-          git fetch origin
-          git rebase origin/${{ github.base_ref }}
-          base_ref=$(git rev-parse origin/${{ github.base_ref }})
+          git fetch origin ${{ github.base_ref }}
+          git switch ${{ github.base_ref }}
+          git switch -
+          git rebase ${{ github.base_ref }}
+          base_ref=$(git rev-parse ${{ github.base_ref }})
           echo "base ref: $base_ref"
           while : ; do
             current_head=$(git rev-parse HEAD)
