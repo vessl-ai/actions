@@ -9,16 +9,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
+          fetch-depth: 0
       - name: Check author
         run: |-
           set -e 
           git config --global user.email "devops@vessl.ai"
           git config --global user.name "VESSL AI DevOps Bot"
-          git fetch origin ${{ github.base_ref }}
-          git switch ${{ github.base_ref }}
-          git switch -
-          git rebase ${{ github.base_ref }}
-          base_ref=$(git rev-parse ${{ github.base_ref }})
+          git rebase origin/${{ github.base_ref }}
+          base_ref=$(git rev-parse origin/${{ github.base_ref }})
           echo "base ref: $base_ref"
           while : ; do
             current_head=$(git rev-parse HEAD)
