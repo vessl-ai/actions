@@ -14,7 +14,7 @@ jobs:
           git config --global user.name "VESSL AI DevOps Bot"
           git fetch origin ${{ github.base_ref }}
           git switch ${{ github.base_ref }}
-          git switch -
+          git switch --detach -
           git rebase ${{ github.base_ref }}
           base_ref=$(git rev-parse ${{ github.base_ref }})
           echo "base ref: $base_ref"
